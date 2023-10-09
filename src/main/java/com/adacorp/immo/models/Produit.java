@@ -3,22 +3,20 @@ package com.adacorp.immo.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
-
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 @Entity
-public  class Client {
+public class Produit {
     @Id
     @GeneratedValue
-    private UUID clientID;
-    private String nomComplet;
-    private String email;
+    private UUID produitID;
+    private String nomProduit;
+    private double prixProduit;
+    private double stockProduit;
 }

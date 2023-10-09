@@ -1,28 +1,47 @@
 package com.adacorp.immo.controllers;
 
+import com.adacorp.immo.dto.ClientRequestDTO;
+import com.adacorp.immo.dto.ClientResponseDTO;
+import com.adacorp.immo.exceptions.ClientNotFoundException;
 import com.adacorp.immo.models.Client;
+import com.adacorp.immo.services.ClientService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/clients/")
 public class ClientController {
-   // Client client1 = new Client("Tyrion Lanister","moneyandpower.com");
-
-    @GetMapping("get-client")
-    public String  getClientById(){
-
-        return "Method de retour d'un client";
+    private final ClientService clientService;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
+
+
+    @GetMapping("{clientID}")
+    public ClientResponseDTO getClientById(@PathVariable("clientID") UUID clientID) throws ClientNotFoundException {
+
+        return clientService.getClientById(clientID);
+    }
+
     @PostMapping("create-client")
-    public String createClient(){
-        return "Endpoint pour créer un client";
+    public String createClient(@RequestBody ClientRequestDTO clientAEnregistrer){
+        return clientService.createClient(clientAEnregistrer);
     }
-    @PutMapping("edit-client")
-    public String editClient(){
-        return "Endpoint pour modifier un client";
+    @GetMapping("get-all")
+    public List<ClientResponseDTO> getAllClient(){
+        return clientService.getAllClient();
     }
-    @DeleteMapping("delete-client")
-    public String deleteClient(){
-        return "EndPoint pour delete un client";
+
+
+    @PutMapping("{clientID}")
+    public Client updateClientById(@PathVariable("clientID") UUID clientID,
+                                   @RequestBody ClientRequestDTO clientAModifier) throws ClientNotFoundException {
+        return clientService.updateClientById(clientID, clientAModifier);
+    }
+    @DeleteMapping("{clientID}")
+    public String deleteClientById(@PathVariable UUID clientID ) throws ClientNotFoundException{
+        return clientService.deleteClientById(clientID);
     }
 }
